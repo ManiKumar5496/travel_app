@@ -10,7 +10,7 @@ Future<void> main() async {
   await Hive.initFlutter((await getApplicationDocumentsDirectory()).path);
   Hive.registerAdapter(TripModelAdapter());
   await Hive.openBox<TripModel>('trips');
-  runApp(const ProviderScope(child: const MyApp()));
+  runApp(const ProviderScope(child:  MyApp()));
 }
 
 class MyApp extends StatelessWidget {
