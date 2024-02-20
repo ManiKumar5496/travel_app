@@ -54,15 +54,16 @@ class TripListNotifier extends StateNotifier<List<Trip>> {
     this._delTrips,
   ) : super([]);
 
-  Future<void>addNewTrip(Trip trip) async {
+  Future<void> addNewTrip(Trip trip) async {
     await _addTrips(trip);
   }
 
-  Future<void>removeTrip(int tripId) async {
+  Future<void> removeTrip(int tripId) async {
     await _delTrips(tripId);
   }
 
-  Future<void>loadTrips() async {
-    await _getTrips();
+  Future<void> loadTrips() async {
+    final tripsOrFalure = await _getTrips();
+    tripsOrFalure.fold((error) => state = [], (trips) => state = trips);
   }
 }

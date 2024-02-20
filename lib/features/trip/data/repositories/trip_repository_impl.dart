@@ -1,8 +1,9 @@
+import 'package:travel_app/core/failure.dart';
 import 'package:travel_app/features/trip/data/datasources/trip_local_datasource.dart';
 import 'package:travel_app/features/trip/data/models/trip_model.dart';
 import 'package:travel_app/features/trip/domain/entities/trip.dart';
 import 'package:travel_app/features/trip/domain/repositories/trip_repository.dart';
-
+import 'package:dartz/dartz.dart';
 class TripRepositoryImpl implements TripRepository {
   final TripLocalDataSource localDataSource;
 
@@ -19,9 +20,16 @@ class TripRepositoryImpl implements TripRepository {
   }
 
   @override
-  Future<List<Trip>> getTrips() async {
-    final tripModel = localDataSource.getTrips();
+  Future<Either<Failure,List<Trip>>> getTrips() async {
+
+    try{
+ final tripModel = localDataSource.getTrips();
     List<Trip> res = tripModel.map((e) => e.toEntity()).toList();
-    return res;
+    return Right(res);
+
+    }catch(e){
+return Left(SomeSpecificError(e.toString()));
+    }
+   
   }
 }
